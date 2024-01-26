@@ -116,11 +116,11 @@ def todo_you(request):
             due_date=due_date,
             user=request.user
         )
-        read= models.Task.objects.filter(user=request.user).order_by('-due_date', 'priority') #request.user is used to get details of current user.
+        read= models.Task.objects.filter(user=request.user) #request.user is used to get details of current user.
         return redirect('/todopage',{'read':read})
     all_tasks=Task.objects.filter(user=request.user)
     completed_tasks = all_tasks.filter(completed=True)
-    pending_tasks = all_tasks.filter(completed=False)
+    pending_tasks = all_tasks.filter(completed=False).order_by('-due_date', 'priority')
     return render(request,'todo.html',{'completed':completed_tasks,'pending':pending_tasks})
 
 @login_required
